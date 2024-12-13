@@ -1,0 +1,20 @@
+# Ignore Python cache and compiled files
+__pycache__/
+*.pyc
+
+# Ignore temporary files
+tmp/
+
+# Ignore environment variables file
+.env
+
+# Ignore Jupyter Notebook checkpoints (if used)
+.ipynb_checkpoints/
+
+# Ignore local models or data files (if not needed for deployment)
+pretrained_models/
+trained_models/
+
+# Ignore operating system files
+.DS_Store
+Thumbs.db
