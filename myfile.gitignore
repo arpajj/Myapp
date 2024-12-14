@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 
 # Ignore temporary files
-tmp/
+tmp/*
 
 # Ignore environment variables file
 .env

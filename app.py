@@ -19,11 +19,11 @@ vision_to_caption_model = predictor.setup("C:/Users/admitos/Desktop/ThesisUU/pre
 print("1) Vision-to-Caption Model Loaded Successfully!")
 
 # Load Caption-to-Story model
-caption_to_story_model = BartForConditionalGeneration.from_pretrained('facebook/bart-large')
-tokenizer = BartTokenizer.from_pretrained('facebook/bart-large')
-caption_to_story_model.load_state_dict(torch.load('C:/Users/admitos/Desktop/ThesisUU/Phase_2/trained_models/BART/trained_bart_e9.pt', map_location=help.D))
-caption_to_story_model.eval()
-print("2) Caption-to-Story Model Loaded Successfully!")
+# caption_to_story_model = BartForConditionalGeneration.from_pretrained('facebook/bart-large')
+# tokenizer = BartTokenizer.from_pretrained('facebook/bart-large')
+# caption_to_story_model.load_state_dict(torch.load('C:/Users/admitos/Desktop/ThesisUU/Phase_2/trained_models/BART/trained_bart_e9.pt', map_location=help.D))
+# caption_to_story_model.eval()
+# print("2) Caption-to-Story Model Loaded Successfully!")
 
 @app.route('/generate-story', methods=['POST'])
 def generate_story():
@@ -44,14 +44,15 @@ def generate_story():
 
     # Generate story
     input_text = ' </s> '.join(story_captions)
+    torch.cuda.empty_cache()
     print(input_text)
-    input_ids = tokenizer(input_text, return_tensors="pt").input_ids
-    with torch.no_grad():
-        summary_ids = caption_to_story_model.generate(input_ids.to(help.D), max_length=200, num_beams=1, early_stopping=False, do_sample=True, top_p=0.9) ### nucleus sampling
-        #summary_ids = caption_to_story_model.generate(input_ids, max_length=200, top_p=0.9)
-        story = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
+    # input_ids = tokenizer(input_text, return_tensors="pt").input_ids
+    # with torch.no_grad():
+    #     summary_ids = caption_to_story_model.generate(input_ids.to(help.D), max_length=200, num_beams=1, early_stopping=False, do_sample=True, top_p=0.9) ### nucleus sampling
+    #     #summary_ids = caption_to_story_model.generate(input_ids, max_length=200, top_p=0.9)
+    #     story = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
 
-    return jsonify({"story": story})
+    return jsonify({"story": input_text})
     #return jsonify({"story": input_text})
 
 if __name__ == '__main__':
